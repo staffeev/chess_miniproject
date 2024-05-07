@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent, QGraphicsView, QGraphicsItem, QMainWindow
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent, QGraphicsView, QGraphicsItem, QMainWindow, QWidget
 from PyQt5.QtSvg import QGraphicsSvgItem
 from PyQt5.QtCore import pyqtSignal, Qt
 from dot import Dot
@@ -9,34 +9,25 @@ CANVAS_SIZE = (480, 480)
 
 
 class Scene(QGraphicsScene):
-    itemMovedEvent = pyqtSignal(object)
-
-    def get_item_coords(self, scene_item, old_pos=False):
+    def get_item_coords(self, scene_item):
         """Получение координат фигуры на холсте"""
         width = self.sceneRect().width()
         cell_size = width // 8
         item_width = scene_item.boundingRect().width()
-        if old_pos:
-            ix, iy = scene_item.old_pos.coords
-        else:
-            ix, iy = scene_item.dot.coords
+        ix, iy = scene_item.dot.coords
         x = cell_size * ix + cell_size // 2 - item_width // 2
         y = cell_size * iy + cell_size // 2 - item_width // 2
         return y, x
     
-    def get_item_cell(self, scene_item, old_pos=False):
+    def get_item_cell(self, scene_item):
         """Получение клетки, в которой находится фигура"""
         width = self.sceneRect().width()
         cell_size = width // 8
         item_width = scene_item.boundingRect().width()
-        if old_pos:
-            ix, iy = scene_item.old_dot.coords
-        else:
-            ix, iy = scene_item.dot.coords
         x, y = scene_item.scenePos().x(), scene_item.scenePos().y()
         ix = (x + item_width // 2) // cell_size
         iy = (y + item_width // 2) // cell_size
-        return Dot(iy, ix)
+        return Dot(int(iy), int(ix))
 
 
 class SceneItem(QGraphicsSvgItem):
@@ -55,14 +46,19 @@ class SceneItem(QGraphicsSvgItem):
     def mouseReleaseEvent(self, event: QGraphicsSceneMouseEvent) -> None:
         if event.button() != Qt.LeftButton:
             return
-        new_dot = self.scene().get_item_cell(self, True)
+        new_dot = self.scene().get_item_cell(self)
         print(self.old_dot, new_dot)
+        self.scene().parent().itemMovedEvent.emit([self, self.old_dot, new_dot, event])
+    
+    def acceptReleaseEvent(self, event):
         return super().mouseReleaseEvent(event)
 
 
 class Canvas(QMainWindow):
-    def __init__(self, board):
-        super().__init__()
+    itemMovedEvent = pyqtSignal(object)
+    
+    def __init__(self, board, parent=None):
+        super().__init__(parent)
         self.board = board
         self.scene = Scene(self)
         self.scene.setSceneRect(0, 0, *CANVAS_SIZE)
