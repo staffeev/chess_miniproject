@@ -19,8 +19,8 @@ class GameHandler(QWidget):
         self.canvas.draw()
         self.canvas.show()
     
-    @except_errors
-    # @echo_which_turn
+    @except_errors()
+    @echo_which_turn
     def __accept_command(self, args):
         canvas_figure, old_pos, new_pos, event = args
         fig = self.board.get_figure(old_pos)
