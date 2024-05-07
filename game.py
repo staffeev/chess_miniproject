@@ -1,5 +1,5 @@
 from board import Board
-from gui import Canvas
+from gui.cmd_canvas import Canvas
 from figures.figures import *
 from decorators import check_wrong_fig_for_turn, echo_which_turn
 from exceptions import OutOfBoundsException, IncorrectMovePatternError, WrongTurnColorError
