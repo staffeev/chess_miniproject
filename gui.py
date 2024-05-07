@@ -1,20 +1,19 @@
-from figures import *
-
+from figures import figures
 
 
 CLASS_TO_SYMBOL = {
-    (Pawn, 0): "♟︎",
-    (Pawn, 1): "♙",
-    (Rook, 0): "♜",
-    (Rook, 1): "♖",
-    (Bishop, 0): "♝",
-    (Bishop, 1): "♗",
-    (Knight, 0): "♞",
-    (Knight, 1): "♘",
-    (King, 0): "♚",
-    (King, 1): "♔",
-    (Queen, 0): "♛",
-    (Queen, 1): "♕"
+    (figures.Pawn, 0): "♟︎",
+    (figures.Pawn, 1): "♙",
+    (figures.Rook, 0): "♜",
+    (figures.Rook, 1): "♖",
+    (figures.Bishop, 0): "♝",
+    (figures.Bishop, 1): "♗",
+    (figures.Knight, 0): "♞",
+    (figures.Knight, 1): "♘",
+    (figures.King, 0): "♚",
+    (figures.King, 1): "♔",
+    (figures.Queen, 0): "♛",
+    (figures.Queen, 1): "♕"
 }
 
 

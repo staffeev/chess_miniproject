@@ -1,7 +1,8 @@
-from chess_figure import Figure
-from mixin import FigureMixin
+import os
+from figures.chess_figure import Figure
+from figures.mixin import FigureMixin
 from dot import Dot
-from metaclass import ABCFigureMeta
+from figures.metaclass import ABCFigureMeta
 
 
 

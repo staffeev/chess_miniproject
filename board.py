@@ -1,4 +1,4 @@
-from figures import *
+from figures.figures import *
 from dot import Dot
 from decorators import check_in_borders
 
