@@ -1,8 +1,3 @@
-import sys
-from PyQt5.QtCore import QObject, pyqtSignal
-
-
-
 class OutOfBoundsException(Exception):
     def __init__(self, message="Нельзя ходить за пределы поля"):
         super().__init__(message)
@@ -22,15 +17,3 @@ class WrongTurnColorError(Exception):
 class InvalidDataForDBError(Exception):
     def __init__(self, message="Предотвращена попытка ввести недопустимые данные в БД"):
         super().__init__(message)
-
-
-class ExceptionHandler(QObject):
-    errorSignal = pyqtSignal()
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def handler(self, exctype, value, traceback):
-        self.errorSignal.emit(exctype)
-        sys._excepthook(exctype, value, traceback)
-    
