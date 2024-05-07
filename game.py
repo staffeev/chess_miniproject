@@ -23,7 +23,7 @@ class Game:
         self.board.fill_start_field()
         self.canvas.draw()
     
-    async def play(self):
+    def play(self):
         while True:
             try:
                 self.__accept_command()
@@ -38,12 +38,12 @@ class Game:
             print()
             self.canvas.draw()
             if (res := self.is_checkmate()) is not None:
-                await self.game_over(res)
+                self.game_over(res)
     
-    async def game_over(self, res):
+    def game_over(self, res):
         print("Победили", "белые" if res == 0 else "черные")
         self.print_statistics()
-        duration = await get_duration(self.start_time)
+        duration = get_duration(self.start_time)
         update_result_by_id(self.session, self.cur_play.id, duration, 1 - res)
         self.session.close()
         exit(0)

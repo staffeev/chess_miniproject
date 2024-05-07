@@ -1,8 +1,7 @@
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QApplication
 import sys
-import os
-# os.chdir("..")
-from board import Board
+from orm import db_session
+from game import Game
 from gui.canvas_widget import Canvas
 
 
@@ -14,10 +13,11 @@ def except_hook(cls, exception, traceback):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    b = Board()
-    b.fill_start_field()
-    programme = Canvas(b)
-    programme.show()
-    programme.draw()
+    db_session.global_init("db/plays.db")
+    session = db_session.create_session()
+    g = Game(session, Canvas)
+    g.start()
+    g.canvas.show()
+    g.play()
     sys.excepthook = except_hook
     sys.exit(app.exec())

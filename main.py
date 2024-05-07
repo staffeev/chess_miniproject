@@ -11,7 +11,7 @@ async def main():
     session = db_session.create_session()
     g = Game(session)
     g.start()
-    await g.play()
+    g.play()
 
 
 def between_callback():
