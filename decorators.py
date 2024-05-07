@@ -1,5 +1,5 @@
 from dot import Dot
-from exceptions import OutOfBoundsException, WrongTurnColorError
+from exceptions import OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError
 import re
 
 
@@ -10,6 +10,19 @@ def logging_move(func):
             print(f"Фигура {self.__class__.__name__} цвета {self.color} походила с клетки {self.pos} на клетку {dot + Dot(1, 1)}")
         return res
     return __move
+
+
+def except_errors(errors_to_handle=(OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError)):
+    def __inner(func):
+        def __inner2(self, *args, **kwargs):
+            try:
+                print("SKFGAKSGKFKSG")
+                return func(self, *args, **kwargs)
+            except errors_to_handle as e:
+                print("AAAAAAaa")
+                print(e)
+        return __inner2
+    return __inner
 
 
 def check_wrong_fig_for_turn(func):
