@@ -1,7 +1,5 @@
-from PyQt5.QtGui import QDragEnterEvent, QDragMoveEvent
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsSceneDragDropEvent, QGraphicsSceneMouseEvent, QGraphicsView, QApplication, QGraphicsItem, QMainWindow
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent, QGraphicsView, QGraphicsItem, QMainWindow
 from PyQt5.QtSvg import QGraphicsSvgItem
-from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, Qt
 from dot import Dot
 import os
@@ -24,7 +22,7 @@ class Scene(QGraphicsScene):
             ix, iy = scene_item.dot.coords
         x = cell_size * ix + cell_size // 2 - item_width // 2
         y = cell_size * iy + cell_size // 2 - item_width // 2
-        return x, y
+        return y, x
     
     def get_item_cell(self, scene_item, old_pos=False):
         """Получение клетки, в которой находится фигура"""
@@ -42,6 +40,7 @@ class Scene(QGraphicsScene):
 
 
 class SceneItem(QGraphicsSvgItem):
+    """Класс фигуры на сцене"""
     def __init__(self, filename, dot):
         super().__init__(filename)
         self.old_dot = None
@@ -59,30 +58,17 @@ class SceneItem(QGraphicsSvgItem):
         new_dot = self.scene().get_item_cell(self, True)
         print(self.old_dot, new_dot)
         return super().mouseReleaseEvent(event)
-        # print(event.scenePos())
-        # self.scene().itemMovedEvent.emit(self)
-    
-    def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent) -> None:
-        return super().mouseMoveEvent(event)
-
-    # def mouseDoubleClickEvent(self, event):
-    #     self.scene().itemDoubleClicked.emit(self)
-
 
 
 class Canvas(QMainWindow):
     def __init__(self, board):
         super().__init__()
         self.board = board
-        self.scene = Scene()
+        self.scene = Scene(self)
         self.scene.setSceneRect(0, 0, *CANVAS_SIZE)
         self.view = QGraphicsView()
         self.view.setScene(self.scene)
         self.setCentralWidget(self.view)
-        # self.scene.itemMovedEvent.connect(self.handleitemMovedEvent)
-
-    def handleitemMovedEvent(self, item):
-        print(item.boundingRect())
     
     @staticmethod
     def __get_svg_filename(elem):
@@ -102,7 +88,6 @@ class Canvas(QMainWindow):
         for i in self.board.field:
             item = SceneItem(self.__get_svg_filename(i), i.pos)
             item.setFlag(QGraphicsItem.ItemIsMovable)
-            # item.ItemPositionChange.connect(lambda x: print("AAA"))
             x, y = self.scene.get_item_coords(item)
-            item.setPos(y, x)
+            item.setPos(x, y)
             self.scene.addItem(item)
