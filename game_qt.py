@@ -3,7 +3,7 @@ import sys
 from gui.canvas_widget import Canvas
 from board import Board
 from decorators import echo_which_turn, check_wrong_fig_for_turn, except_errors
-from exceptions import IncorrectMovePatternError, ExceptionHandler
+from exceptions import IncorrectMovePatternError
 
 
 class GameHandler(QWidget):
@@ -41,8 +41,5 @@ if __name__ == "__main__":
     # db_session.global_init("db/plays.db")
     # session = db_session.create_session()
     g = GameHandler()
-    exceptionHandler = ExceptionHandler(g)
-    sys._excepthook = sys.excepthook
-    sys.excepthook = exceptionHandler.handler
     g.start()
     sys.exit(app.exec())

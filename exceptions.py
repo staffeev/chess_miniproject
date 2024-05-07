@@ -11,7 +11,7 @@ class IncorrectMovePatternError(Exception):
 class WrongTurnColorError(Exception):
     color_to_word = {1: "белого", 0: "черного"}
     def __init__(self, cur_color, message="Сейчас должна ходить фигура {} цвета"):
-        super().__init__(message.format(cur_color))
+        super().__init__(message.format(self.color_to_word[cur_color]))
 
 
 class InvalidDataForDBError(Exception):

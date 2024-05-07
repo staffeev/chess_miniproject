@@ -16,10 +16,8 @@ def except_errors(errors_to_handle=(OutOfBoundsException, WrongTurnColorError, I
     def __inner(func):
         def __inner2(self, *args, **kwargs):
             try:
-                print("SKFGAKSGKFKSG")
                 return func(self, *args, **kwargs)
             except errors_to_handle as e:
-                print("AAAAAAaa")
                 print(e)
         return __inner2
     return __inner
