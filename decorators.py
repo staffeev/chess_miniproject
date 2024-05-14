@@ -17,7 +17,7 @@ def except_errors(errors_to_handle=(OutOfBoundsException, WrongTurnColorError, I
             try:
                 return func(self, *args, **kwargs)
             except errors_to_handle as e:
-                print(e)
+                self.gameMessageEvent.emit(str(e))
                 self.canvas.draw()
         return __inner2
     return __inner

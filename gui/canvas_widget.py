@@ -86,3 +86,8 @@ class Canvas(QWidget):
             x, y = self.scene.get_item_coords(item)
             item.setPos(x, y)
             self.scene.addItem(item)
+    
+    def freeze_scene(self):
+        """Запретить передвижения фигур"""
+        for item in self.scene.items():
+            item.setFlag(QGraphicsItem.ItemIsMovable, False)

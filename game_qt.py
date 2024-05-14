@@ -5,11 +5,14 @@ from board import Board
 from decorators import echo_which_turn, check_wrong_fig_for_turn, except_errors
 from exceptions import IncorrectMovePatternError, KingUnderAttackError
 from figures import figures
+from PyQt5.QtCore import pyqtSignal
 
 
 class GameHandler(QWidget):
-    def __init__(self, ):
-        super().__init__()
+    gameMessageEvent = pyqtSignal(object)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.board = Board()
         self.canvas = Canvas(self.board, self)
         self.canvas.itemMovedEvent.connect(self.__accept_command)
@@ -18,7 +21,6 @@ class GameHandler(QWidget):
     def start(self):
         self.board.fill_start_field()
         self.canvas.draw()
-        # self.canvas.show()
     
     @except_errors()
     @echo_which_turn
@@ -29,7 +31,6 @@ class GameHandler(QWidget):
             raise KingUnderAttackError()
         self.__make_move(fig, new_pos)
         self.move_color = 1 - self.move_color
-        print(self.board)
         if (res := self.is_checkmate()) is not None:
             self.game_over(res)
     
@@ -43,12 +44,14 @@ class GameHandler(QWidget):
         self.canvas.draw()
     
     def game_over(self, res):
-        print("Победили", "белые" if res == 0 else "черные")
+        self.gameMessageEvent.emit("Победили " + ("белые" if res == 0 else "черные"))
+        self.canvas.freeze_scene()
+        # print("Победили " + "белые" if res == 0 else "черные")
         # self.print_statistics()
         # duration = get_duration(self.start_time)
         # update_result_by_id(self.session, self.cur_play.id, duration, 1 - res)
         # self.session.close()
-        exit(0)
+        # exit(0)
     
     def is_check(self):
         for fig in self.board.field:

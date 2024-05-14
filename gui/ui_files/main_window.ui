@@ -27,9 +27,8 @@
     <property name="title">
      <string>Игра</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
+    <addaction name="new_game_act"/>
+    <addaction name="load_game_act"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -40,7 +39,7 @@
    <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="new_game_act">
    <property name="text">
     <string>Новая игра</string>
    </property>
@@ -48,7 +47,7 @@
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="load_game_act">
    <property name="text">
     <string>Загрузить игру</string>
    </property>
