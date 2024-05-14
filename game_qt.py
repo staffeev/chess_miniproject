@@ -22,15 +22,15 @@ class GameHandler(QWidget):
     @except_errors()
     @echo_which_turn
     def __accept_command(self, args):
-        canvas_figure, old_pos, new_pos, event = args
+        old_pos, new_pos = args
         fig = self.board.get_figure(old_pos)
         self.__make_move(fig, new_pos)
-        canvas_figure.acceptReleaseEvent(event)
         self.move_color = 1 - self.move_color
     
     @check_wrong_fig_for_turn
     def __make_move(self, fig, pos2):
         if not fig.can_move(pos2):
+            fig.move(fig.pos)
             raise IncorrectMovePatternError(fig, pos2)
         self.board.del_figure(pos2)
         fig.move(pos2)

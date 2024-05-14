@@ -50,10 +50,8 @@ class SceneItem(QGraphicsSvgItem):
             return
         new_dot = self.scene().get_item_cell(self)
         print(self.old_dot, new_dot)
-        self.scene().parent().itemMovedEvent.emit([self, self.old_dot, new_dot, event])
-    
-    def acceptReleaseEvent(self, event):
-        return super().mouseReleaseEvent(event)
+        super().mouseReleaseEvent(event)
+        self.scene().parent().itemMovedEvent.emit([self.old_dot, new_dot])
 
 
 class Canvas(QMainWindow):

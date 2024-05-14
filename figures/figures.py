@@ -71,7 +71,6 @@ class Pawn(Figure, FigureMixin, metaclass=ABCFigureMeta):
             return False
         if (self.color == 0 and dx < 0) or (self.color == 1 and dx > 0):
             return False
-        fig = self.board.get_figure(pos2)
         if dy != 0:
             return self.board.get_figure(pos2) is not None
         return self.get_from_line(pos2 + (pos2 - self.pos).argsign())

@@ -1,6 +1,5 @@
 from dot import Dot
 from exceptions import OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError
-import re
 
 
 def logging_move(func):
@@ -19,6 +18,7 @@ def except_errors(errors_to_handle=(OutOfBoundsException, WrongTurnColorError, I
                 return func(self, *args, **kwargs)
             except errors_to_handle as e:
                 print(e)
+                self.canvas.draw()
         return __inner2
     return __inner
 
