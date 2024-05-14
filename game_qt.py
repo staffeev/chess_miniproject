@@ -4,6 +4,7 @@ from gui.canvas_widget import Canvas
 from board import Board
 from decorators import echo_which_turn, check_wrong_fig_for_turn, except_errors
 from exceptions import IncorrectMovePatternError
+from figures import figures
 
 
 class GameHandler(QWidget):
@@ -26,6 +27,9 @@ class GameHandler(QWidget):
         fig = self.board.get_figure(old_pos)
         self.__make_move(fig, new_pos)
         self.move_color = 1 - self.move_color
+        print(self.board)
+        if (res := self.is_checkmate()) is not None:
+            self.game_over(res)
     
     @check_wrong_fig_for_turn
     def __make_move(self, fig, pos2):
@@ -34,6 +38,21 @@ class GameHandler(QWidget):
             raise IncorrectMovePatternError(fig, pos2)
         self.board.del_figure(pos2)
         fig.move(pos2)
+        self.canvas.draw()
+    
+    def game_over(self, res):
+        print("Победили", "белые" if res == 0 else "черные")
+        # self.print_statistics()
+        # duration = get_duration(self.start_time)
+        # update_result_by_id(self.session, self.cur_play.id, duration, 1 - res)
+        # self.session.close()
+        exit(0)
+
+    def is_checkmate(self):
+        for fig in self.board.field:
+            if fig.__class__ == figures.King and fig.is_mate():
+                return fig.color
+        return None
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ from figures.chess_figure import Figure
 from figures.mixin import FigureMixin
 from dot import Dot
 from figures.metaclass import ABCFigureMeta
-
+from exceptions import OutOfBoundsException
 
 
 class Knight(Figure, metaclass=ABCFigureMeta):
@@ -33,7 +33,7 @@ class King(Figure):
                     if self.can_move(Dot(x, y)) and not \
                         self.board.is_under_attack(Dot(x, y), 1 - self.color):
                         return False
-                except IndexError:
+                except OutOfBoundsException:
                     continue
         return True
 

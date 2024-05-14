@@ -3,6 +3,22 @@ from dot import Dot
 from decorators import check_in_borders
 
 
+CLASS_TO_SYMBOL = {
+    (Pawn, 0): "♟︎",
+    (Pawn, 1): "♙",
+    (Rook, 0): "♜",
+    (Rook, 1): "♖",
+    (Bishop, 0): "♝",
+    (Bishop, 1): "♗",
+    (Knight, 0): "♞",
+    (Knight, 1): "♘",
+    (King, 0): "♚",
+    (King, 1): "♔",
+    (Queen, 0): "♛",
+    (Queen, 1): "♕"
+}
+
+
 class Board:
     """Класс шахматной доски"""
     def __init__(self):
@@ -37,6 +53,18 @@ class Board:
             if fig.color == color and fig.can_move(dot):
                 return True
         return False
+    
+    def __str__(self):
+        return repr(self)
+    
+    def __repr__(self):
+        m = [[" " for _ in range(8)] for _ in range(8)]
+        for fig in self.field:
+            x, y = fig.pos.coords
+            cl, color = fig.__class__, fig.color
+            m[x][y] = CLASS_TO_SYMBOL[cl, color]
+        return "\n".join(["".join(i) for i in m])
+
 
 if __name__ == "__main__":
     b = Board()
