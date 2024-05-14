@@ -21,7 +21,6 @@ class MainWindow(QMainWindow):
     
     def show_stats(self):
         """Выводит статистику по играм"""
-        print("AAAAAAAAAAAAAA")
         moves = get_all_moves(self.session)
         results = get_all_results(self.session)
         stats1 = {}
