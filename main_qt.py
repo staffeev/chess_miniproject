@@ -5,6 +5,7 @@ from game import Game
 from gui.canvas_widget import Canvas
 from board import Board
 from game_qt import GameHandler
+from gui.main_window import MainWindow
 
 
 def except_hook(cls, exception, traceback):
@@ -15,7 +16,10 @@ def except_hook(cls, exception, traceback):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    game = GameHandler()
-    game.start()
+    w = MainWindow(GameHandler())
+    # game = GameHandler()
+    # game.start()
     sys.excepthook = except_hook
+    w.game.start()
+    w.show()
     sys.exit(app.exec())

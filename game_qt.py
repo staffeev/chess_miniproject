@@ -18,7 +18,7 @@ class GameHandler(QWidget):
     def start(self):
         self.board.fill_start_field()
         self.canvas.draw()
-        self.canvas.show()
+        # self.canvas.show()
     
     @except_errors()
     @echo_which_turn

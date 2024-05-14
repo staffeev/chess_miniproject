@@ -54,7 +54,7 @@ class SceneItem(QGraphicsSvgItem):
         self.scene().parent().itemMovedEvent.emit([self.old_dot, new_dot])
 
 
-class Canvas(QMainWindow):
+class Canvas(QWidget):
     itemMovedEvent = pyqtSignal(object)
     
     def __init__(self, board, parent=None):
@@ -64,7 +64,6 @@ class Canvas(QMainWindow):
         self.scene.setSceneRect(0, 0, *CANVAS_SIZE)
         self.view = QGraphicsView()
         self.view.setScene(self.scene)
-        self.setCentralWidget(self.view)
     
     @staticmethod
     def __get_svg_filename(elem):
