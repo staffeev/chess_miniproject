@@ -6,21 +6,28 @@ from decorators import echo_which_turn, check_wrong_fig_for_turn, except_errors
 from exceptions import IncorrectMovePatternError, KingUnderAttackError
 from figures import figures
 from PyQt5.QtCore import pyqtSignal
+from functions import create_new_game, create_new_move, update_result_by_id
 
 
 class GameHandler(QWidget):
     gameMessageEvent = pyqtSignal(object)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, session=None):
         super().__init__(parent)
+        self.cur_play = None
         self.board = Board()
         self.canvas = Canvas(self.board, self)
         self.canvas.itemMovedEvent.connect(self.__accept_command)
         self.move_color = 1
+        self.session = session
     
     def start(self):
         self.board.fill_start_field()
+        if self.session is not None:
+             self.cur_play = create_new_game(self.session)
         self.canvas.draw()
+        if (res := self.is_checkmate()) is not None:
+            self.game_over(res)
     
     @except_errors()
     @echo_which_turn
@@ -40,18 +47,17 @@ class GameHandler(QWidget):
             fig.move(fig.pos)
             raise IncorrectMovePatternError(fig, pos2)
         self.board.del_figure(pos2)
+        if self.session is not None:
+            create_new_move(self.session, fig.__class__.__name__, fig.color, fig.pos, pos2,
+                        self.cur_play.id)
         fig.move(pos2)
         self.canvas.draw()
     
     def game_over(self, res):
         self.gameMessageEvent.emit(["Победили " + ("белые" if res == 0 else "черные"), "green"])
         self.canvas.freeze_scene()
-        # print("Победили " + "белые" if res == 0 else "черные")
-        # self.print_statistics()
-        # duration = get_duration(self.start_time)
-        # update_result_by_id(self.session, self.cur_play.id, duration, 1 - res)
-        # self.session.close()
-        # exit(0)
+        if self.session is not None:
+            update_result_by_id(self.session, self.cur_play.id, 1 - res)
     
     def is_check(self):
         for fig in self.board.field:

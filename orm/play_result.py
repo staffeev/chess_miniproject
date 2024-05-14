@@ -10,18 +10,11 @@ class PlayResult(SqlAlchemyBase):
     __tablename__ = "results"
     id = Column(Integer, primary_key=True, autoincrement=True)
     win = Column(Integer)
-    duration = Column(Integer)
     date = Column(DateTime, default=datetime.datetime.now)
 
     @validates("win")
     def validate_win(self, _, value):
         if not value in (0, 1):
-            raise InvalidDataForDBError()
-        return value
-    
-    @validates("duration")
-    def validate_duration(self, _, value):
-        if value < 0:
             raise InvalidDataForDBError()
         return value
     

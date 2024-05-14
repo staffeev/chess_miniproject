@@ -11,8 +11,10 @@ def except_hook(cls, exception, traceback):
 
 
 if __name__ == "__main__":
+    db_session.global_init("db/plays.db")
+    session = db_session.create_session()
     app = QApplication(sys.argv)
-    w = MainWindow()
+    w = MainWindow(session)
     sys.excepthook = except_hook
     w.show()
     sys.exit(app.exec())
