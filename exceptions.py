@@ -17,3 +17,8 @@ class WrongTurnColorError(Exception):
 class InvalidDataForDBError(Exception):
     def __init__(self, message="Предотвращена попытка ввести недопустимые данные в БД"):
         super().__init__(message)
+
+
+class KingUnderAttackError(Exception):
+    def __init__(self, message="Король находится под атакой, нельзя ходить другой фигурой"):
+        super().__init__(message)

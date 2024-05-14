@@ -30,8 +30,8 @@ class King(Figure):
         for x in (-1, 0, 1):
             for y in (-1, 0, 1):
                 try:
-                    if self.can_move(Dot(x, y)) and not \
-                        self.board.is_under_attack(Dot(x, y), 1 - self.color):
+                    if self.can_move(self.pos + Dot(x, y)) and not \
+                        self.board.is_under_attack(self.pos + Dot(x, y), 1 - self.color):
                         return False
                 except OutOfBoundsException:
                     continue

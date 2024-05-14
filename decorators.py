@@ -1,17 +1,17 @@
 from dot import Dot
-from exceptions import OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError
+from exceptions import OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError, KingUnderAttackError
 
 
 def logging_move(func):
     def __move(self, dot):
         res = func(self, dot)
         if res:
-            print(f"Фигура {self.__class__.__name__} цвета {self.color} походила с клетки {self.pos} на клетку {dot + Dot(1, 1)}")
+            print(f"Фигура {self.__class__.__name__} цвета {self.color} походила с клетки {self.pos + Dot(1, 1)} на клетку {dot + Dot(1, 1)}")
         return res
     return __move
 
 
-def except_errors(errors_to_handle=(OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError)):
+def except_errors(errors_to_handle=(OutOfBoundsException, WrongTurnColorError, IncorrectMovePatternError, KingUnderAttackError)):
     def __inner(func):
         def __inner2(self, *args, **kwargs):
             try:

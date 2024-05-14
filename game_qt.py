@@ -3,7 +3,7 @@ import sys
 from gui.canvas_widget import Canvas
 from board import Board
 from decorators import echo_which_turn, check_wrong_fig_for_turn, except_errors
-from exceptions import IncorrectMovePatternError
+from exceptions import IncorrectMovePatternError, KingUnderAttackError
 from figures import figures
 
 
@@ -25,6 +25,8 @@ class GameHandler(QWidget):
     def __accept_command(self, args):
         old_pos, new_pos = args
         fig = self.board.get_figure(old_pos)
+        if self.is_check() == fig.color and fig.__class__ != figures.King:
+            raise KingUnderAttackError()
         self.__make_move(fig, new_pos)
         self.move_color = 1 - self.move_color
         print(self.board)
@@ -47,6 +49,12 @@ class GameHandler(QWidget):
         # update_result_by_id(self.session, self.cur_play.id, duration, 1 - res)
         # self.session.close()
         exit(0)
+    
+    def is_check(self):
+        for fig in self.board.field:
+            if fig.__class__ == figures.King and fig.is_check():
+                return fig.color
+        return None
 
     def is_checkmate(self):
         for fig in self.board.field:

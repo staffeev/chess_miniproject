@@ -27,8 +27,8 @@ class Scene(QGraphicsScene):
         x, y = scene_item.scenePos().x(), scene_item.scenePos().y()
         ix = (x + item_width // 2) // cell_size
         iy = (y + item_width // 2) // cell_size
-        ix = x // cell_size
-        iy = y // cell_size
+        # ix = x // cell_size
+        # iy = y // cell_size
         return Dot(int(iy), int(ix))
 
 
