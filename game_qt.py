@@ -44,7 +44,7 @@ class GameHandler(QWidget):
         self.canvas.draw()
     
     def game_over(self, res):
-        self.gameMessageEvent.emit("Победили " + ("белые" if res == 0 else "черные"))
+        self.gameMessageEvent.emit(["Победили " + ("белые" if res == 0 else "черные"), "green"])
         self.canvas.freeze_scene()
         # print("Победили " + "белые" if res == 0 else "черные")
         # self.print_statistics()

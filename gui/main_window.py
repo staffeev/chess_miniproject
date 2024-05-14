@@ -23,8 +23,9 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.game.canvas.view)
         self.game.gameMessageEvent.connect(self.__process_message)
 
-    def __process_message(self, msg):
-        self.statusbar.setStyleSheet("background-color: orange")
+    def __process_message(self, args):
+        msg, back_color = args
+        self.statusbar.setStyleSheet(f"background-color: {back_color}")
         self.statusbar.showMessage(msg, 2000)
         QTimer.singleShot(2000, lambda: self.statusbar.setStyleSheet("background-color: white"))
     
