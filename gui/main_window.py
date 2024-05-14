@@ -4,6 +4,8 @@ from PyQt5 import uic
 import os
 from sys import exit
 from game_qt import GameHandler
+from gui.choose_game_form import ChooseGameForm
+from functions import get_all_results
 
 
 
@@ -14,12 +16,23 @@ class MainWindow(QMainWindow):
         self.game = None
         self.session = session
         self.new_game_act.triggered.connect(self.create_new_game)
+        self.load_game_act.triggered.connect(self.load_game)
     
     def create_new_game(self):
         """Новая игра"""
         game = GameHandler(self, self.session)
         self.connect_to_game_handler(game)
         self.game.start()
+    
+    def load_game(self):
+        """Загрузка игры"""
+        form = ChooseGameForm(get_all_results(self.session))
+        if not form.exec():
+            return
+        game = GameHandler(self, self.session, form.selected_game)
+        self.connect_to_game_handler(game)
+        self.game.start()
+
     
     def connect_to_game_handler(self, game):
         """Подключение хэндлера игры"""

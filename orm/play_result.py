@@ -11,6 +11,7 @@ class PlayResult(SqlAlchemyBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     win = Column(Integer)
     date = Column(DateTime, default=datetime.datetime.now)
+    moves = relation("PlayMove")
 
     @validates("win")
     def validate_win(self, _, value):

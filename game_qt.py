@@ -7,14 +7,15 @@ from exceptions import IncorrectMovePatternError, KingUnderAttackError
 from figures import figures
 from PyQt5.QtCore import pyqtSignal
 from functions import create_new_game, create_new_move, update_result_by_id
+from dot import Dot
 
 
 class GameHandler(QWidget):
     gameMessageEvent = pyqtSignal(object)
 
-    def __init__(self, parent=None, session=None):
+    def __init__(self, parent=None, session=None, cur_play=None):
         super().__init__(parent)
-        self.cur_play = None
+        self.cur_play = cur_play
         self.board = Board()
         self.canvas = Canvas(self.board, self)
         self.canvas.itemMovedEvent.connect(self.__accept_command)
@@ -23,11 +24,26 @@ class GameHandler(QWidget):
     
     def start(self):
         self.board.fill_start_field()
-        if self.session is not None:
+        if self.cur_play is not None:
+            self.restore_moves()
+        if self.session is not None and self.cur_play is None:
              self.cur_play = create_new_game(self.session)
         self.canvas.draw()
         if (res := self.is_checkmate()) is not None:
             self.game_over(res)
+    
+    def restore_moves(self):
+        """Восстановление ходов игры"""
+        for move in self.cur_play.moves:
+            print(move.figure, move.color, move.prev_pos, move.new_pos)
+            x, y = move.new_pos.split(", ")
+            x = int(x.strip("("))
+            y = int(y.strip(")"))
+            fig = [i for i in self.board.field if i.__class__.__name__ == move.figure \
+                   and i.color == move.color and str(i.pos) == move.prev_pos][0]
+            self.__make_move(fig, Dot(x, y))
+            self.move_color = 1 - move.color
+
     
     @except_errors()
     @echo_which_turn
