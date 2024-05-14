@@ -30,13 +30,14 @@
     <addaction name="new_game_act"/>
     <addaction name="load_game_act"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="menu2">
     <property name="title">
      <string>Статистика</string>
     </property>
+    <addaction name="stats_act"/>
    </widget>
    <addaction name="menu"/>
-   <addaction name="menu_2"/>
+   <addaction name="menu2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="new_game_act">
@@ -58,6 +59,11 @@
   <action name="action_3">
    <property name="text">
     <string>Сохранить состояние игры</string>
+   </property>
+  </action>
+  <action name="stats_act">
+   <property name="text">
+    <string>Показать статистику</string>
    </property>
   </action>
  </widget>

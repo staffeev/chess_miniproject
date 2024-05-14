@@ -43,7 +43,6 @@ class GameHandler(QWidget):
                    and i.color == move.color and str(i.pos) == move.prev_pos][0]
             self.__make_move(fig, Dot(x, y))
             self.move_color = 1 - move.color
-
     
     @except_errors()
     @echo_which_turn
